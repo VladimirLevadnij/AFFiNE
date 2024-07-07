@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, WebContentsView } from 'electron';
 
 import { applicationMenuEvents } from './application-menu';
 import { logger } from './logger';
@@ -23,7 +23,7 @@ export function registerEvents() {
     for (const [key, eventRegister] of Object.entries(namespaceEvents)) {
       const subscription = eventRegister((...args: any[]) => {
         const chan = `${namespace}:${key}`;
-        logger.info(
+        logger.debug(
           '[ipc-event]',
           chan,
           args.filter(
@@ -33,10 +33,27 @@ export function registerEvents() {
               typeof a !== 'object'
           )
         );
-        getActiveWindows().forEach(win => win.webContents.send(chan, ...args));
+        // is this efficient?
+        getActiveWindows().forEach(win => {
+          if (win.isDestroyed()) {
+            return;
+          }
+          // .webContents could be undefined if the window is destroyed
+          win.webContents?.send(chan, ...args);
+          win.contentView.children.forEach(child => {
+            if (child instanceof WebContentsView) {
+              child.webContents?.send(chan, ...args);
+            }
+          });
+        });
       });
       app.on('before-quit', () => {
-        subscription();
+        // subscription on quit sometimes crashes the app
+        try {
+          subscription();
+        } catch (err) {
+          logger.error('unsubscribe error', err);
+        }
       });
     }
   }

@@ -133,6 +133,9 @@ test('windows only check', async ({ page }) => {
 });
 
 test('delete workspace', async ({ page }) => {
+  await page.getByTestId('sidebar-new-page-button').click();
+  await page.waitForSelector('v-line');
+
   await clickSideBarCurrentWorkspaceBanner(page);
   await page.getByTestId('new-workspace').click();
   await page.getByTestId('create-workspace-input').fill('Delete Me');
@@ -141,7 +144,6 @@ test('delete workspace', async ({ page }) => {
   //   delay: 100,
   // });
   await page.waitForTimeout(1000);
-  await clickSideBarSettingButton(page);
   await page.getByTestId('current-workspace-label').click();
   await expect(page.getByTestId('workspace-name-input')).toHaveValue(
     'Delete Me'
@@ -159,8 +161,7 @@ test('delete workspace', async ({ page }) => {
   await page.getByTestId('delete-workspace-button').click();
   await page.getByTestId('delete-workspace-input').fill('Delete Me');
   await page.getByTestId('delete-workspace-confirm-button').click();
-  await page.waitForTimeout(1000);
-  expect(await page.getByTestId('workspace-name').textContent()).toBe(
+  await expect(page.getByTestId('workspace-name')).toContainText(
     'Demo Workspace'
   );
 });
@@ -202,7 +203,7 @@ test('open split view', async ({ page }) => {
   await page
     .locator('.affine-reference-title:has-text("hi from another page")')
     .click({
-      modifiers: [process.platform === 'darwin' ? 'Meta' : 'Control'],
+      modifiers: [process.platform === 'darwin' ? 'Meta' : 'Control', 'Alt'],
     });
   await expect(page.locator('.doc-title-container')).toHaveCount(2);
 });

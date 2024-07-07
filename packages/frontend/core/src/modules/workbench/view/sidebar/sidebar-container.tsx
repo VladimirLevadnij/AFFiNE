@@ -24,16 +24,11 @@ export const SidebarContainer = ({
     workbench.toggleSidebar();
   }, [workbench]);
 
-  const isWindowsDesktop = environment.isDesktop && environment.isWindows;
-
   return (
     <div className={clsx(styles.sidebarContainerInner, className)} {...props}>
       <Header floating={false} onToggle={handleToggleOpen}>
-        {!isWindowsDesktop && sidebarTabs.length > 0 && (
-          <SidebarHeaderSwitcher />
-        )}
+        <SidebarHeaderSwitcher />
       </Header>
-      {isWindowsDesktop && sidebarTabs.length > 0 && <SidebarHeaderSwitcher />}
       {sidebarTabs.length > 0 ? (
         sidebarTabs.map(sidebar => (
           <ViewSidebarTabBodyTarget

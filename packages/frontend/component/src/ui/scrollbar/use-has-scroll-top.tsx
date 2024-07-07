@@ -25,7 +25,7 @@ export function useHasScrollTop(ref: RefObject<HTMLElement> | null) {
     return () => {
       container.removeEventListener('scroll', updateScrollTop);
     };
-  }, [ref]);
+  }); // avoid using ref.current as a dependency to prevent it from being set too late.
 
   return hasScrollTop;
 }
