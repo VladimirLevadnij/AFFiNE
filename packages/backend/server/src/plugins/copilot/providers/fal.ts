@@ -87,6 +87,7 @@ export class FalProvider
     'workflows/darkskygit/clay',
     'workflows/darkskygit/pixel-art',
     'workflows/darkskygit/sketch',
+    'fal-ai/workflowutils/teed',
     // image to text
     'llava-next',
   ];

@@ -84,4 +84,26 @@ export const WorkflowGraphList: WorkflowGraphs = [
       },
     ],
   },
+  {
+    name: 'image-sketch',
+    graph: [
+      {
+        id: 'start',
+        name: 'Start: extract edge',
+        nodeType: WorkflowNodeType.Basic,
+        type: NodeExecutorType.ChatImage,
+        promptName: 'debug:action:fal-teed',
+        paramKey: 'teed',
+        edges: ['step2'],
+      },
+      {
+        id: 'step2',
+        name: 'Step 2: generate tags',
+        nodeType: WorkflowNodeType.Basic,
+        type: NodeExecutorType.ChatText,
+        promptName: 'workflow:image-sketch:step2',
+        edges: [],
+      },
+    ],
+  },
 ];

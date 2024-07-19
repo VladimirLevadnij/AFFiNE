@@ -42,6 +42,7 @@ export const promptKeys = [
   'Continue writing',
   'workflow:presentation',
   'workflow:brainstorm',
+  'workflow:image-sketch',
 ] as const;
 
 export type PromptKey = (typeof promptKeys)[number];

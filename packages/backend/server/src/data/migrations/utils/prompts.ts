@@ -136,6 +136,12 @@ export const prompts: Prompt[] = [
     ],
   },
   {
+    name: 'debug:action:fal-teed',
+    action: 'fal-teed',
+    model: 'fal-ai/workflowutils/teed',
+    messages: [],
+  },
+  {
     name: 'Summary',
     action: 'Summary',
     model: 'gpt-4o',
@@ -573,6 +579,24 @@ content: {{content}}`,
       {
         role: 'user',
         content: '{{content}}',
+      },
+    ],
+  },
+  {
+    name: 'workflow:image-sketch',
+    action: 'workflow:image-sketch',
+    // used only in workflow, point to workflow graph name
+    model: 'image-sketch',
+    messages: [],
+  },
+  {
+    name: 'workflow:image-sketch:step2',
+    action: 'workflow:image-sketch:step2',
+    model: 'gpt-4mini',
+    messages: [
+      {
+        role: 'system',
+        content: `Analyze the input image and describe the image accurately in 50 words/phrases separated by commas. The output must contain the phrase “sketch for art examination, monochrome”.\nUse the output only for the final result, not for other content or extraneous statements.`,
       },
     ],
   },
