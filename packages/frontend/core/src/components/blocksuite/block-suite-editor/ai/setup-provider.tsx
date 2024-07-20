@@ -29,7 +29,7 @@ const filterStyleToPromptName = new Map(
   Object.entries({
     'Clay style': 'debug:action:fal-sdturbo-clay',
     'Pixel style': 'debug:action:fal-sdturbo-pixel',
-    'Sketch style': 'debug:action:fal-sdturbo-sketch',
+    'Sketch style': 'workflow:image-sketch',
     'Anime style': 'debug:action:fal-sdturbo-fantasy',
   })
 );
@@ -356,13 +356,12 @@ Could you make a new website based on these notes and send back just the html fi
 
   AIProvider.provide('filterImage', options => {
     // test to image
-    const promptName = filterStyleToPromptName.get(
-      options.style as string
-    ) as PromptKey;
+    const promptName = filterStyleToPromptName.get(options.style as string);
     return toImage({
       ...options,
       timeout: 120000,
-      promptName,
+      promptName: promptName as PromptKey,
+      workflow: !!promptName?.startsWith('workflow'),
     });
   });
 
