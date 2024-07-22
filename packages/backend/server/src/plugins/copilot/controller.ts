@@ -288,6 +288,7 @@ export class CopilotController {
       if (latestMessage) {
         params = Object.assign({}, params, latestMessage.params, {
           content: latestMessage.content,
+          attachments: latestMessage.attachments,
         });
       }
 

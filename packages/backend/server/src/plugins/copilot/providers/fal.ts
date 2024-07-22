@@ -62,6 +62,7 @@ type FalPrompt = {
   image_url?: string;
   prompt?: string;
   lora?: string[];
+  controlnets?: { image_url: string }[];
 };
 
 export class FalProvider
@@ -87,7 +88,8 @@ export class FalProvider
     'workflows/darkskygit/clay',
     'workflows/darkskygit/pixel-art',
     'workflows/darkskygit/sketch',
-    'fal-ai/workflowutils/teed',
+    'workflowutils/teed',
+    'lora/image-to-image',
     // image to text
     'llava-next',
   ];
@@ -130,10 +132,24 @@ export class FalProvider
           : [params.lora]
         : []
     ).filter(v => typeof v === 'string' && v.length);
+    const controlnets = (
+      params?.controlnets
+        ? Array.isArray(params.controlnets)
+          ? params.controlnets.map(image_url => ({ image_url }))
+          : [{ image_url: params.controlnets }]
+        : []
+    ).filter(
+      v =>
+        v &&
+        typeof v === 'object' &&
+        typeof v.image_url === 'string' &&
+        v.image_url.length
+    );
     return {
       image_url: attachments?.[0],
       prompt: content.trim(),
       lora: lora.length ? lora : undefined,
+      controlnets: controlnets.length ? controlnets : undefined,
     };
   }
 

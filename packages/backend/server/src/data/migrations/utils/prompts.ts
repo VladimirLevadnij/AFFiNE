@@ -118,6 +118,12 @@ export const prompts: Prompt[] = [
     messages: [],
   },
   {
+    name: 'debug:action:fal-lora-i2i',
+    action: 'fal-lora-i2i',
+    model: 'lora/image-to-image',
+    messages: [],
+  },
+  {
     name: 'debug:action:fal-face-to-sticker',
     action: 'Convert to sticker',
     model: 'face-to-sticker',
@@ -138,8 +144,8 @@ export const prompts: Prompt[] = [
   {
     name: 'debug:action:fal-teed',
     action: 'fal-teed',
-    model: 'fal-ai/workflowutils/teed',
-    messages: [],
+    model: 'workflowutils/teed',
+    messages: [{ role: 'user', content: '{{content}}' }],
   },
   {
     name: 'Summary',
@@ -592,11 +598,15 @@ content: {{content}}`,
   {
     name: 'workflow:image-sketch:step2',
     action: 'workflow:image-sketch:step2',
-    model: 'gpt-4mini',
+    model: 'gpt-4o-mini',
     messages: [
       {
         role: 'system',
         content: `Analyze the input image and describe the image accurately in 50 words/phrases separated by commas. The output must contain the phrase “sketch for art examination, monochrome”.\nUse the output only for the final result, not for other content or extraneous statements.`,
+      },
+      {
+        role: 'user',
+        content: '{{content}}',
       },
     ],
   },
