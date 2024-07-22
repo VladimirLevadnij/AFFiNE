@@ -50,7 +50,7 @@ const PureMessageSchema = z.object({
   content: z.string(),
   attachments: z.array(z.string()).optional().nullable(),
   params: z
-    .record(z.union([z.string(), z.array(z.string())]))
+    .record(z.union([z.string(), z.array(z.string()), z.record(z.any())]))
     .optional()
     .nullable(),
 });

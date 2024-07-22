@@ -59,6 +59,7 @@ const FalStreamOutputSchema = z.object({
 });
 
 type FalPrompt = {
+  model_name?: string;
   image_url?: string;
   prompt?: string;
   lora?: string[];
@@ -125,6 +126,10 @@ export class FalProvider
     if (Array.isArray(attachments) && attachments.length > 1) {
       throw new CopilotPromptInvalid('Only one attachment is allowed');
     }
+    const model_name =
+      typeof params?.model_name === 'string' && params.model_name.length
+        ? params.model_name
+        : undefined;
     const lora = (
       params?.lora
         ? Array.isArray(params.lora)
@@ -133,19 +138,12 @@ export class FalProvider
         : []
     ).filter(v => typeof v === 'string' && v.length);
     const controlnets = (
-      params?.controlnets
-        ? Array.isArray(params.controlnets)
-          ? params.controlnets.map(image_url => ({ image_url }))
-          : [{ image_url: params.controlnets }]
+      params?.controlnets && Array.isArray(params.controlnets)
+        ? params.controlnets
         : []
-    ).filter(
-      v =>
-        v &&
-        typeof v === 'object' &&
-        typeof v.image_url === 'string' &&
-        v.image_url.length
-    );
+    ).filter(v => v && typeof v === 'object');
     return {
+      model_name,
       image_url: attachments?.[0],
       prompt: content.trim(),
       lora: lora.length ? lora : undefined,

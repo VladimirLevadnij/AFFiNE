@@ -1,5 +1,9 @@
 import { NodeExecutorType } from './executor';
-import type { WorkflowGraphs, WorkflowNodeState } from './types';
+import type {
+  WorkflowGraphs,
+  WorkflowNodeState,
+  WorkflowParams,
+} from './types';
 import { WorkflowNodeType } from './types';
 
 export const WorkflowGraphList: WorkflowGraphs = [
@@ -94,6 +98,17 @@ export const WorkflowGraphList: WorkflowGraphs = [
         type: NodeExecutorType.ChatImage,
         promptName: 'debug:action:fal-teed',
         paramKey: 'controlnets',
+        paramToucher: params => {
+          if (Array.isArray(params.controlnets)) {
+            const controlnets = params.controlnets.map(image_url => ({
+              path: 'diffusers/controlnet-canny-sdxl-1.0',
+              image_url,
+            }));
+            return { controlnets } as WorkflowParams;
+          } else {
+            return {};
+          }
+        },
         edges: ['step2'],
       },
       {
@@ -103,10 +118,14 @@ export const WorkflowGraphList: WorkflowGraphs = [
         type: NodeExecutorType.ChatText,
         promptName: 'workflow:image-sketch:step2',
         paramKey: 'tags',
-        edges: [],
+        paramToucher: params => ({
+          ...params,
+          model_name: 'stabilityai/stable-diffusion-xl-base-1.0',
+        }),
+        edges: ['step3'],
       },
       {
-        id: 'start',
+        id: 'step3',
         name: 'Step3: generate image',
         nodeType: WorkflowNodeType.Basic,
         type: NodeExecutorType.ChatImage,

@@ -121,7 +121,7 @@ export const prompts: Prompt[] = [
     name: 'debug:action:fal-lora-i2i',
     action: 'fal-lora-i2i',
     model: 'lora/image-to-image',
-    messages: [],
+    messages: [{ role: 'user', content: '{{tags}}' }],
   },
   {
     name: 'debug:action:fal-face-to-sticker',
