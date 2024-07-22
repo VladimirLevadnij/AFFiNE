@@ -645,7 +645,7 @@ __metadata:
     "@testing-library/react": "npm:^16.0.0"
     "@toeverything/infra": "workspace:*"
     "@types/affine__env": "workspace:*"
-    "@types/eslint": "npm:^8.56.7"
+    "@types/eslint": "npm:^9.0.0"
     "@types/node": "npm:^20.12.7"
     "@typescript-eslint/eslint-plugin": "npm:^7.6.0"
     "@typescript-eslint/parser": "npm:^7.6.0"
@@ -15302,13 +15302,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:*, @types/eslint@npm:^8.56.7":
-  version: 8.56.10
-  resolution: "@types/eslint@npm:8.56.10"
+"@types/eslint@npm:*, @types/eslint@npm:^9.0.0":
+  version: 9.6.0
+  resolution: "@types/eslint@npm:9.6.0"
   dependencies:
     "@types/estree": "npm:*"
     "@types/json-schema": "npm:*"
-  checksum: 10/0cdd914b944ebba51c35827d3ef95bc3e16eb82b4c2741f6437fa57cdb00a4407c77f89c220afe9e4c9566982ec8a0fb9b97c956ac3bd4623a3b6af32eed8424
+  checksum: 10/39fc797c671ec9c9184802b4974748cf45ee1b11d7aaaaede44426abcafd07ec7c18eb090e8f5b3387b51637ce3fdf54499472d8dd58a928f0d005cbacb573b4
   languageName: node
   linkType: hard
 
