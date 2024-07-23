@@ -198,6 +198,18 @@ export const PeekViewModalContainer = forwardRef<
     },
     [target]
   );
+  /**
+   * ### Animation timeline:
+   * ```plain
+   *                                      150ms
+   *                                   ⎮ - - - - ⎮
+   * dialog:     +--------400ms--------+
+   * controls:               +-------230ms-------+
+   *             ⎮ - - - - - ⎮
+   *            controls delay =
+   *             400 - 230 + 150
+   * ```
+   */
   const animateZoomIn = useCallback(() => {
     setAnimeState('animating');
     setVtOpen(true);
@@ -214,7 +226,11 @@ export const PeekViewModalContainer = forwardRef<
         },
       }).catch(console.error);
     }, 0);
-    setTimeout(() => animateControls(true), 400 - 230 + 150);
+    setTimeout(
+      () => animateControls(true),
+      // controls delay: to make sure the time interval for animations of dialog and controls is 150ms.
+      400 - 230 + 150
+    );
   }, [animateControls, zoomAnimate]);
   const animateZoomOut = useCallback(() => {
     setAnimeState('animating');
