@@ -14,6 +14,7 @@ export const root = style({
   padding: '0 12px',
   margin: '20px 0',
   position: 'relative',
+  whiteSpace: 'nowrap',
 });
 export const icon = style({
   marginRight: '8px',

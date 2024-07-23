@@ -1,30 +1,17 @@
 import { cssVar } from '@toeverything/theme';
 import { style } from '@vanilla-extract/css';
+
+// TODO(@CatsJuice): new variables are ready in design system
 export const root = style({
-  display: 'inline-flex',
+  width: 32,
+  height: 32,
+  borderRadius: 8,
+  boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.15)',
+  border: `1px solid ${cssVar('borderColor')}`,
   background: cssVar('white30'),
-  alignItems: 'center',
-  borderRadius: '8px',
-  border: `1px solid ${cssVar('black10')}`,
-  fontSize: cssVar('fontSm'),
-  width: '100%',
-  position: 'relative',
-  height: '52px',
-  userSelect: 'none',
-  cursor: 'pointer',
-  padding: '0 24px',
-  transition: 'background 0.2s ease',
-  selectors: {
-    '&:active': {
-      background: cssVar('white50'),
-    },
-  },
 });
 export const icon = style({
-  marginRight: '18px',
   color: cssVar('iconColor'),
-  fontSize: '24px',
-});
-export const spacer = style({
-  flex: 1,
+  fontSize: 20,
+  display: 'block',
 });
