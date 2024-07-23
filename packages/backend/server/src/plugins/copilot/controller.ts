@@ -303,14 +303,22 @@ export class CopilotController {
           merge(
             // actual chat event stream
             shared$.pipe(
-              map(data =>
-                data.status === GraphExecutorState.EmitContent
-                  ? {
+              map(data => {
+                switch (data.status) {
+                  case GraphExecutorState.EmitContent:
+                    return {
                       type: 'message' as const,
                       id: messageId,
                       data: data.content,
-                    }
-                  : {
+                    };
+                  case GraphExecutorState.EmitAttachment:
+                    return {
+                      type: 'attachment' as const,
+                      id: messageId,
+                      data: data.attachment,
+                    };
+                  default:
+                    return {
                       type: 'event' as const,
                       id: messageId,
                       data: {
@@ -318,8 +326,9 @@ export class CopilotController {
                         id: data.node.id,
                         type: data.node.config.nodeType,
                       } as any,
-                    }
-              )
+                    };
+                }
+              })
             ),
             // save the generated text to the session
             shared$.pipe(

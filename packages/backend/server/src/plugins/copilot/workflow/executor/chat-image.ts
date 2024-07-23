@@ -63,28 +63,30 @@ export class CopilotChatImageExecutor extends AutoRegisteredWorkflowExecutor {
     params: Record<string, string>,
     options?: CopilotChatOptions
   ): AsyncIterable<NodeExecuteResult> {
-    const [{ paramKey, id }, prompt, provider] = await this.initExecutor(data);
+    const [{ paramKey, paramToucher, id }, prompt, provider] =
+      await this.initExecutor(data);
 
     const finalMessage = prompt.finish(params);
     if (paramKey) {
       // update params with custom key
+      const result = {
+        [paramKey]: await provider.generateImages(
+          finalMessage,
+          prompt.model,
+          options
+        ),
+      };
       yield {
         type: NodeExecuteState.Params,
-        params: {
-          [paramKey]: await provider.generateImages(
-            finalMessage,
-            prompt.model,
-            options
-          ),
-        },
+        params: paramToucher?.(result) ?? result,
       };
     } else {
-      for await (const content of provider.generateImagesStream(
+      for await (const attachment of provider.generateImagesStream(
         finalMessage,
         prompt.model,
         options
       )) {
-        yield { type: NodeExecuteState.Content, nodeId: id, content };
+        yield { type: NodeExecuteState.Attachment, nodeId: id, attachment };
       }
     }
   }

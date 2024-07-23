@@ -109,7 +109,7 @@ export class ChatPrompt {
             ? `Invalid param value: ${key}=${income}`
             : `Missing param value: ${key}`;
           this.logger.warn(
-            `${prefix} in session ${sessionId}, use default options: ${options[0]}`
+            `${prefix} in session ${sessionId}, use default options: ${Array.isArray(options) ? options[0] : options}`
           );
         }
         if (Array.isArray(options)) {
@@ -129,11 +129,27 @@ export class ChatPrompt {
    */
   finish(params: PromptParams, sessionId?: string): PromptMessage[] {
     this.checkParams(params, sessionId);
-    return this.messages.map(({ content, params: _, ...rest }) => ({
-      ...rest,
-      params,
-      content: Mustache.render(content, params),
-    }));
+
+    const { attachments: attach, ...restParams } = params;
+    const paramsAttach = Array.isArray(attach) ? attach : [];
+
+    return this.messages.map(
+      ({ attachments: attach, content, params: _, ...rest }) => {
+        const attachments = [
+          ...(Array.isArray(attach) ? attach : []),
+          ...paramsAttach,
+        ];
+        return {
+          ...rest,
+          params,
+          content: Mustache.render(content, restParams),
+          attachments:
+            attachments.length && rest.role === 'user'
+              ? attachments
+              : undefined,
+        };
+      }
+    );
   }
 }
 
