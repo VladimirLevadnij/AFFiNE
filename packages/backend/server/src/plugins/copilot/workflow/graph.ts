@@ -118,10 +118,6 @@ export const WorkflowGraphList: WorkflowGraphs = [
         type: NodeExecutorType.ChatText,
         promptName: 'workflow:image-sketch:step2',
         paramKey: 'tags',
-        paramToucher: params => ({
-          ...params,
-          model_name: 'stabilityai/stable-diffusion-xl-base-1.0',
-        }),
         edges: ['step3'],
       },
       {
@@ -129,7 +125,7 @@ export const WorkflowGraphList: WorkflowGraphs = [
         name: 'Step3: generate image',
         nodeType: WorkflowNodeType.Basic,
         type: NodeExecutorType.ChatImage,
-        promptName: 'debug:action:fal-lora-i2i',
+        promptName: 'workflow:image-sketch:step3',
         edges: [],
       },
     ],

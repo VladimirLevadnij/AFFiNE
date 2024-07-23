@@ -13,6 +13,9 @@ type PromptConfig = {
   temperature?: number;
   topP?: number;
   maxTokens?: number;
+  // fal
+  modelName?: string;
+  loras?: { path: string; scale?: number }[];
 };
 
 type Prompt = {
@@ -116,12 +119,6 @@ export const prompts: Prompt[] = [
     action: 'AI image filter anime style',
     model: 'workflows/darkskygit/animie',
     messages: [],
-  },
-  {
-    name: 'debug:action:fal-lora-i2i',
-    action: 'fal-lora-i2i',
-    model: 'lora/image-to-image',
-    messages: [{ role: 'user', content: '{{tags}}' }],
   },
   {
     name: 'debug:action:fal-face-to-sticker',
@@ -609,6 +606,20 @@ content: {{content}}`,
         content: '{{content}}',
       },
     ],
+  },
+  {
+    name: 'workflow:image-sketch:step3',
+    action: 'workflow:image-sketch:step3',
+    model: 'lora/image-to-image',
+    messages: [{ role: 'user', content: '{{tags}}' }],
+    config: {
+      modelName: 'stabilityai/stable-diffusion-xl-base-1.0',
+      loras: [
+        {
+          path: 'https://models.affine.pro/fal/sketch_for_art_examination.safetensors',
+        },
+      ],
+    },
   },
   {
     name: 'Create headings',

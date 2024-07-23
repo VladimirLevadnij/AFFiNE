@@ -67,13 +67,14 @@ export class CopilotChatTextExecutor extends AutoRegisteredWorkflowExecutor {
       await this.initExecutor(data);
 
     const finalMessage = prompt.finish(params);
+    const config = { ...prompt.config, ...options };
     if (paramKey) {
       // update params with custom key
       const result = {
         [paramKey]: await provider.generateText(
           finalMessage,
           prompt.model,
-          options
+          config
         ),
       };
       yield {
@@ -84,7 +85,7 @@ export class CopilotChatTextExecutor extends AutoRegisteredWorkflowExecutor {
       for await (const content of provider.generateTextStream(
         finalMessage,
         prompt.model,
-        options
+        config
       )) {
         yield { type: NodeExecuteState.Content, nodeId: id, content };
       }

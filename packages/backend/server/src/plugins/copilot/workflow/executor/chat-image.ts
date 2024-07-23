@@ -67,13 +67,14 @@ export class CopilotChatImageExecutor extends AutoRegisteredWorkflowExecutor {
       await this.initExecutor(data);
 
     const finalMessage = prompt.finish(params);
+    const config = { ...prompt.config, ...options };
     if (paramKey) {
       // update params with custom key
       const result = {
         [paramKey]: await provider.generateImages(
           finalMessage,
           prompt.model,
-          options
+          config
         ),
       };
       yield {
@@ -84,7 +85,7 @@ export class CopilotChatImageExecutor extends AutoRegisteredWorkflowExecutor {
       for await (const attachment of provider.generateImagesStream(
         finalMessage,
         prompt.model,
-        options
+        config
       )) {
         yield { type: NodeExecuteState.Attachment, nodeId: id, attachment };
       }

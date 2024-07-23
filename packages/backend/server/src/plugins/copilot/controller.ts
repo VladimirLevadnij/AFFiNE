@@ -388,6 +388,7 @@ export class CopilotController {
 
       const source$ = from(
         provider.generateImagesStream(session.finish(params), session.model, {
+          ...session.config.promptConfig,
           seed: this.parseNumber(params.seed),
           signal: this.getSignal(req),
           user: user.id,
