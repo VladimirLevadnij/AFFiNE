@@ -1,5 +1,5 @@
 import { Button, Menu } from '@affine/component';
-import { FavoriteItemsAdapter } from '@affine/core/modules/properties';
+import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/properties';
 import { Trans, useI18n } from '@affine/i18n';
 import { FilterIcon } from '@blocksuite/icons/rc';
 import type { DocMeta } from '@blocksuite/store';
@@ -54,7 +54,7 @@ export const SelectPage = ({
   const clearSelected = useCallback(() => {
     onChange([]);
   }, [onChange]);
-  const favAdapter = useService(FavoriteItemsAdapter);
+  const favAdapter = useService(CompatibleFavoriteItemsAdapter);
   const favourites = useLiveData(favAdapter.favorites$);
   const pageHeaderColsDef = usePageHeaderColsDef();
   const {

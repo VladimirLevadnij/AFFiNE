@@ -1,5 +1,5 @@
 import { Tooltip } from '@affine/component';
-import { FavoriteItemsAdapter } from '@affine/core/modules/properties';
+import { CompatibleFavoriteItemsAdapter } from '@affine/core/modules/properties';
 import type { Collection } from '@affine/env/filter';
 import { Trans, useI18n } from '@affine/i18n';
 import {
@@ -44,7 +44,7 @@ export const RulesMode = ({
   const allowListPages: DocMeta[] = [];
   const rulesPages: DocMeta[] = [];
   const [showTips, setShowTips] = useState(false);
-  const favAdapter = useService(FavoriteItemsAdapter);
+  const favAdapter = useService(CompatibleFavoriteItemsAdapter);
   const favorites = useLiveData(favAdapter.favorites$);
   useEffect(() => {
     setShowTips(!localStorage.getItem('hide-rules-mode-include-page-tips'));
