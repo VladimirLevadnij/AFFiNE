@@ -89,10 +89,6 @@ export class FalProvider
     'face-to-sticker',
     'imageutils/rembg',
     'fast-sdxl/image-to-image',
-    'workflows/darkskygit/animie',
-    'workflows/darkskygit/clay',
-    'workflows/darkskygit/pixel-art',
-    'workflows/darkskygit/sketch',
     'workflowutils/teed',
     'lora/image-to-image',
     // image to text

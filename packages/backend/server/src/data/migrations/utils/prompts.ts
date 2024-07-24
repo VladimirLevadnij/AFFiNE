@@ -26,7 +26,7 @@ type Prompt = {
   messages: PromptMessage[];
 };
 
-export const workflow: Prompt[] = [
+const workflow: Prompt[] = [
   {
     name: 'debug:action:fal-teed',
     action: 'fal-teed',
@@ -873,6 +873,7 @@ content: {{content}}`,
       },
     ],
   },
+  ...workflow,
 ];
 
 export async function refreshPrompts(db: PrismaClient) {

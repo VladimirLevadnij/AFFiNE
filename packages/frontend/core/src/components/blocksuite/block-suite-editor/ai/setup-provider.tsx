@@ -27,10 +27,10 @@ import { setupTracker } from './tracker';
 
 const filterStyleToPromptName = new Map(
   Object.entries({
-    'Clay style': 'debug:action:fal-sdturbo-clay',
-    'Pixel style': 'debug:action:fal-sdturbo-pixel',
+    'Clay style': 'workflow:image-clay',
+    'Pixel style': 'workflow:image-pixel',
     'Sketch style': 'workflow:image-sketch',
-    'Anime style': 'debug:action:fal-sdturbo-fantasy',
+    'Anime style': 'workflow:image-anime',
   })
 );
 
@@ -361,7 +361,7 @@ Could you make a new website based on these notes and send back just the html fi
       ...options,
       timeout: 120000,
       promptName: promptName as PromptKey,
-      workflow: !!promptName?.startsWith('workflow'),
+      workflow: !!promptName?.startsWith('workflow:'),
     });
   });
 
