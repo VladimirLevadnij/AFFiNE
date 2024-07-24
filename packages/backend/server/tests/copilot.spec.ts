@@ -717,6 +717,8 @@ test.skip('should be able to preview workflow', async t => {
       console.log('enter node:', ret.node.name);
     } else if (ret.status === GraphExecutorState.ExitNode) {
       console.log('exit node:', ret.node.name);
+    } else if (ret.status === GraphExecutorState.EmitAttachment) {
+      console.log('stream attachment:', ret);
     } else {
       result += ret.content;
       // console.log('stream result:', ret);
