@@ -63,7 +63,11 @@ type FalPrompt = {
   image_url?: string;
   prompt?: string;
   loras?: { path: string; scale?: number }[];
-  controlnets?: { image_url: string }[];
+  controlnets?: {
+    image_url: string;
+    start_percentage?: number;
+    end_percentage?: number;
+  }[];
 };
 
 export class FalProvider
