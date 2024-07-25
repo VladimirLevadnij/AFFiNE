@@ -3,7 +3,7 @@ import { useMount } from '@toeverything/infra';
 import { cssVar } from '@toeverything/theme';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { BaseSelectorDialogProps } from './type';
+import type { BaseSelectorDialogProps } from '.';
 
 export const useSelectDialog = function useSelectDialog<T>(
   id: string,
