@@ -122,6 +122,7 @@ export class ChatPanel extends WithDisposable(ShadowlessElement) {
         this._chatSessionId = history.sessionId;
         this.chatContextValue.chatSessionId = history.sessionId;
         items.push(...history.messages);
+        AIProvider.LAST_ROOT_SESSION_ID = history.sessionId;
       }
 
       this.chatContextValue = {
