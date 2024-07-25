@@ -164,7 +164,7 @@ export const ExplorerDocNode = ({
     () => args => {
       const entityType = args.source.data.entity?.type;
       return args.treeInstruction?.type !== 'make-child'
-        ? (typeof canDrop === 'function' ? canDrop(args) : canDrop) ?? true
+        ? ((typeof canDrop === 'function' ? canDrop(args) : canDrop) ?? true)
         : entityType === 'doc';
     },
     [canDrop]

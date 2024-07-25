@@ -14216,21 +14216,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/csf@npm:^0.1.11":
+"@storybook/csf@npm:^0.1.11, @storybook/csf@npm:^0.1.2, @storybook/csf@npm:^0.1.7":
   version: 0.1.11
   resolution: "@storybook/csf@npm:0.1.11"
   dependencies:
     type-fest: "npm:^2.19.0"
   checksum: 10/f6eeefe3b92ab206676587da9e22a775da026c055999681580d2ca23c98185736f965adc79039a0ae97ea625f0fbc7915cd4559e5db24229a4805784d0b78584
-  languageName: node
-  linkType: hard
-
-"@storybook/csf@npm:^0.1.2, @storybook/csf@npm:^0.1.7":
-  version: 0.1.8
-  resolution: "@storybook/csf@npm:0.1.8"
-  dependencies:
-    type-fest: "npm:^2.19.0"
-  checksum: 10/0cc01216a8888012bd1b33743cfeab83f16d028ba40ff02d39215a827e899451a39aef6b3a30342cdc4f87567d45f93074cfe05bdb8a34561c636ac7d8a13cfd
   languageName: node
   linkType: hard
 

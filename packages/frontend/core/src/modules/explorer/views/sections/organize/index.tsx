@@ -29,7 +29,7 @@ export const ExplorerOrganize = () => {
 
   const t = useI18n();
 
-  const rootFolder = organizeService.rootFolder;
+  const rootFolder = organizeService.folderTree.rootFolder;
 
   const folders = useLiveData(rootFolder.sortedChildren$);
 
@@ -42,8 +42,8 @@ export const ExplorerOrganize = () => {
   }, [rootFolder]);
 
   const handleOnChildrenDrop = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>, node: FolderNode) => {
-      if (!node.id) {
+    (data: DropTargetDropEvent<AffineDNDData>, node?: FolderNode) => {
+      if (!node || !node.id) {
         return; // never happens
       }
       if (
