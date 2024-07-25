@@ -152,6 +152,7 @@ export const Component = () => {
           position: 'fixed',
           left: '50%',
           top: '50%',
+          zIndex: 1,
         }}
       >
         <Menu
@@ -159,6 +160,7 @@ export const Component = () => {
             open: true,
           }}
           items={<UserWithWorkspaceList />}
+          noPortal
           contentOptions={{
             style: {
               width: 300,
