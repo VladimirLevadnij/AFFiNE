@@ -104,7 +104,7 @@ declare global {
 
     interface ChatOptions extends AITextActionOptions {
       sessionId?: string;
-      isRoot?: boolean;
+      isRootSession?: boolean;
     }
 
     interface TranslateOptions extends AITextActionOptions {
