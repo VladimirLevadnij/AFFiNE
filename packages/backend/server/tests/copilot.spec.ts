@@ -7,10 +7,9 @@ import Sinon from 'sinon';
 
 import { AuthService } from '../src/core/auth';
 import { QuotaModule } from '../src/core/quota';
-import { prompts } from '../src/data/migrations/utils/prompts';
 import { ConfigModule } from '../src/fundamentals/config';
 import { CopilotModule } from '../src/plugins/copilot';
-import { PromptService } from '../src/plugins/copilot/prompt';
+import { prompts, PromptService } from '../src/plugins/copilot/prompt/index';
 import {
   CopilotProviderService,
   OpenAIProvider,
