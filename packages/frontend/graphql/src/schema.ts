@@ -455,6 +455,13 @@ export interface ListUserInput {
   skip: InputMaybe<Scalars['Int']['input']>;
 }
 
+export interface ManageUserInput {
+  /** User email */
+  email: Scalars['String']['input'];
+  /** User name */
+  name: InputMaybe<Scalars['String']['input']>;
+}
+
 export interface MissingOauthQueryParameterDataType {
   __typename?: 'MissingOauthQueryParameterDataType';
   name: Scalars['String']['output'];
@@ -471,6 +478,8 @@ export interface Mutation {
   changePassword: UserType;
   /** Cleanup sessions */
   cleanupCopilotSession: Array<Scalars['String']['output']>;
+  /** create change password url for self-host users */
+  createChangePasswordUrl: Scalars['String']['output'];
   /** Create a subscription checkout link of stripe */
   createCheckoutSession: Scalars['String']['output'];
   /** Create a chat message */
@@ -496,6 +505,7 @@ export interface Mutation {
   leaveWorkspace: Scalars['Boolean']['output'];
   publishPage: WorkspacePage;
   recoverDoc: Scalars['DateTime']['output'];
+  removeAdminister: Scalars['Boolean']['output'];
   /** Remove user avatar */
   removeAvatar: RemoveAvatar;
   removeEarlyAccess: Scalars['Int']['output'];
@@ -522,6 +532,8 @@ export interface Mutation {
   /** update multiple server runtime configurable settings */
   updateRuntimeConfigs: Array<ServerRuntimeConfigType>;
   updateSubscriptionRecurring: UserSubscription;
+  /** Update a user */
+  updateUser: UserType;
   /** Update workspace */
   updateWorkspace: WorkspaceType;
   /** Upload user avatar */
@@ -566,6 +578,11 @@ export interface MutationChangePasswordArgs {
 
 export interface MutationCleanupCopilotSessionArgs {
   options: DeleteSessionInput;
+}
+
+export interface MutationCreateChangePasswordUrlArgs {
+  callbackUrl: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 }
 
 export interface MutationCreateCheckoutSessionArgs {
@@ -634,8 +651,13 @@ export interface MutationRecoverDocArgs {
   workspaceId: Scalars['String']['input'];
 }
 
+export interface MutationRemoveAdministerArgs {
+  email: Scalars['String']['input'];
+}
+
 export interface MutationRemoveEarlyAccessArgs {
   email: Scalars['String']['input'];
+  type: EarlyAccessType;
 }
 
 export interface MutationRemoveWorkspaceFeatureArgs {
@@ -728,6 +750,11 @@ export interface MutationUpdateSubscriptionRecurringArgs {
   recurring: SubscriptionRecurring;
 }
 
+export interface MutationUpdateUserArgs {
+  id: Scalars['String']['input'];
+  input: ManageUserInput;
+}
+
 export interface MutationUpdateWorkspaceArgs {
   input: UpdateWorkspaceInput;
 }
@@ -800,6 +827,8 @@ export interface Query {
   serverRuntimeConfig: Array<ServerRuntimeConfigType>;
   /** Get user by email */
   user: Maybe<UserOrLimitedUser>;
+  /** Get user by email for admin */
+  userByEmail: Maybe<UserType>;
   /** Get user by id */
   userById: UserType;
   /** List registered users */
@@ -838,6 +867,10 @@ export interface QueryListWorkspaceFeaturesArgs {
 }
 
 export interface QueryUserArgs {
+  email: Scalars['String']['input'];
+}
+
+export interface QueryUserByEmailArgs {
   email: Scalars['String']['input'];
 }
 
@@ -1216,6 +1249,15 @@ export interface TokenType {
   token: Scalars['String']['output'];
 }
 
+export type AddToAdminMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+export type AddToAdminMutation = {
+  __typename?: 'Mutation';
+  addAdminister: boolean;
+};
+
 export type DeleteBlobMutationVariables = Exact<{
   workspaceId: Scalars['String']['input'];
   hash: Scalars['String']['input'];
@@ -1263,6 +1305,16 @@ export type ChangeEmailMutationVariables = Exact<{
 export type ChangeEmailMutation = {
   __typename?: 'Mutation';
   changeEmail: { __typename?: 'UserType'; id: string; email: string };
+};
+
+export type CreateChangePasswordUrlMutationVariables = Exact<{
+  callbackUrl: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+}>;
+
+export type CreateChangePasswordUrlMutation = {
+  __typename?: 'Mutation';
+  createChangePasswordUrl: string;
 };
 
 export type ChangePasswordMutationVariables = Exact<{
@@ -1337,6 +1389,15 @@ export type CreateCustomerPortalMutation = {
   createCustomerPortal: string;
 };
 
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
+}>;
+
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: { __typename?: 'UserType'; id: string };
+};
+
 export type CreateWorkspaceMutationVariables = Exact<{ [key: string]: never }>;
 
 export type CreateWorkspaceMutation = {
@@ -1356,6 +1417,15 @@ export type DeleteAccountMutation = {
   deleteAccount: { __typename?: 'DeleteAccount'; success: boolean };
 };
 
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+export type DeleteUserMutation = {
+  __typename?: 'Mutation';
+  deleteUser: { __typename?: 'DeleteAccount'; success: boolean };
+};
+
 export type DeleteWorkspaceMutationVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
@@ -1363,6 +1433,16 @@ export type DeleteWorkspaceMutationVariables = Exact<{
 export type DeleteWorkspaceMutation = {
   __typename?: 'Mutation';
   deleteWorkspace: boolean;
+};
+
+export type AddToEarlyAccessMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  type: EarlyAccessType;
+}>;
+
+export type AddToEarlyAccessMutation = {
+  __typename?: 'Mutation';
+  addToEarlyAccess: number;
 };
 
 export type EarlyAccessUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -1389,6 +1469,7 @@ export type EarlyAccessUsersQuery = {
 
 export type RemoveEarlyAccessMutationVariables = Exact<{
   email: Scalars['String']['input'];
+  type: EarlyAccessType;
 }>;
 
 export type RemoveEarlyAccessMutation = {
@@ -1614,6 +1695,35 @@ export type GetServerRuntimeConfigQuery = {
     type: RuntimeConfigType;
     updatedAt: string;
   }>;
+};
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+export type GetUserByEmailQuery = {
+  __typename?: 'Query';
+  userByEmail: {
+    __typename?: 'UserType';
+    id: string;
+    name: string;
+    email: string;
+    features: Array<FeatureType>;
+    hasPassword: boolean | null;
+    emailVerified: boolean;
+    avatarUrl: string | null;
+    quota: {
+      __typename?: 'UserQuota';
+      humanReadable: {
+        __typename?: 'UserQuotaHumanReadable';
+        blobLimit: string;
+        historyPeriod: string;
+        memberLimit: string;
+        name: string;
+        storageQuota: string;
+      };
+    } | null;
+  } | null;
 };
 
 export type GetUserFeaturesQueryVariables = Exact<{ [key: string]: never }>;
@@ -1884,6 +1994,15 @@ export type RecoverDocMutation = {
   recoverDoc: string;
 };
 
+export type RemoveAdminMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+export type RemoveAdminMutation = {
+  __typename?: 'Mutation';
+  removeAdminister: boolean;
+};
+
 export type RemoveAvatarMutationVariables = Exact<{ [key: string]: never }>;
 
 export type RemoveAvatarMutation = {
@@ -2031,6 +2150,21 @@ export type SubscriptionQuery = {
       canceledAt: string | null;
     }>;
   } | null;
+};
+
+export type UpdateAccountMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  input: ManageUserInput;
+}>;
+
+export type UpdateAccountMutation = {
+  __typename?: 'Mutation';
+  updateUser: {
+    __typename?: 'UserType';
+    id: string;
+    name: string;
+    email: string;
+  };
 };
 
 export type UpdateServerRuntimeConfigsMutationVariables = Exact<{
@@ -2285,6 +2419,11 @@ export type Queries =
       response: GetServerRuntimeConfigQuery;
     }
   | {
+      name: 'getUserByEmailQuery';
+      variables: GetUserByEmailQueryVariables;
+      response: GetUserByEmailQuery;
+    }
+  | {
       name: 'getUserFeaturesQuery';
       variables: GetUserFeaturesQueryVariables;
       response: GetUserFeaturesQuery;
@@ -2392,6 +2531,11 @@ export type Queries =
 
 export type Mutations =
   | {
+      name: 'addToAdminMutation';
+      variables: AddToAdminMutationVariables;
+      response: AddToAdminMutation;
+    }
+  | {
       name: 'deleteBlobMutation';
       variables: DeleteBlobMutationVariables;
       response: DeleteBlobMutation;
@@ -2410,6 +2554,11 @@ export type Mutations =
       name: 'changeEmailMutation';
       variables: ChangeEmailMutationVariables;
       response: ChangeEmailMutation;
+    }
+  | {
+      name: 'createChangePasswordUrlMutation';
+      variables: CreateChangePasswordUrlMutationVariables;
+      response: CreateChangePasswordUrlMutation;
     }
   | {
       name: 'changePasswordMutation';
@@ -2442,6 +2591,11 @@ export type Mutations =
       response: CreateCustomerPortalMutation;
     }
   | {
+      name: 'createUserMutation';
+      variables: CreateUserMutationVariables;
+      response: CreateUserMutation;
+    }
+  | {
       name: 'createWorkspaceMutation';
       variables: CreateWorkspaceMutationVariables;
       response: CreateWorkspaceMutation;
@@ -2452,9 +2606,19 @@ export type Mutations =
       response: DeleteAccountMutation;
     }
   | {
+      name: 'deleteUserMutation';
+      variables: DeleteUserMutationVariables;
+      response: DeleteUserMutation;
+    }
+  | {
       name: 'deleteWorkspaceMutation';
       variables: DeleteWorkspaceMutationVariables;
       response: DeleteWorkspaceMutation;
+    }
+  | {
+      name: 'addToEarlyAccessMutation';
+      variables: AddToEarlyAccessMutationVariables;
+      response: AddToEarlyAccessMutation;
     }
   | {
       name: 'removeEarlyAccessMutation';
@@ -2480,6 +2644,11 @@ export type Mutations =
       name: 'recoverDocMutation';
       variables: RecoverDocMutationVariables;
       response: RecoverDocMutation;
+    }
+  | {
+      name: 'removeAdminMutation';
+      variables: RemoveAdminMutationVariables;
+      response: RemoveAdminMutation;
     }
   | {
       name: 'removeAvatarMutation';
@@ -2530,6 +2699,11 @@ export type Mutations =
       name: 'setWorkspacePublicByIdMutation';
       variables: SetWorkspacePublicByIdMutationVariables;
       response: SetWorkspacePublicByIdMutation;
+    }
+  | {
+      name: 'updateAccountMutation';
+      variables: UpdateAccountMutationVariables;
+      response: UpdateAccountMutation;
     }
   | {
       name: 'updateServerRuntimeConfigsMutation';
