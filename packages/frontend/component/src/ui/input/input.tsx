@@ -9,7 +9,7 @@ import type {
   KeyboardEventHandler,
   ReactNode,
 } from 'react';
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useLayoutEffect, useRef } from 'react';
 
 import { input, inputWrapper } from './style.css';
 
@@ -49,26 +49,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   }: InputProps,
   upstreamRef: ForwardedRef<HTMLInputElement>
 ) {
-  const handleRef = useCallback(
-    (ref: HTMLInputElement | null) => {
-      if (ref) {
-        if (autoFocus || autoSelect) {
-          window.setTimeout(() => {
-            ref.focus();
-            if (autoSelect) {
-              ref.select();
-            }
-          }, 0);
-        }
-        if (typeof upstreamRef === 'function') {
-          upstreamRef(ref);
-        } else if (upstreamRef) {
-          upstreamRef.current = ref;
-        }
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  useLayoutEffect(() => {
+    if (inputRef.current && (autoFocus || autoSelect)) {
+      inputRef.current?.focus();
+      if (autoSelect) {
+        inputRef.current?.select();
       }
-    },
-    [autoFocus, autoSelect, upstreamRef]
-  );
+    }
+  }, [autoFocus, autoSelect, upstreamRef]);
 
   return (
     <div
@@ -95,7 +84,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           large: size === 'large',
           'extra-large': size === 'extraLarge',
         })}
-        ref={handleRef}
+        ref={ref => {
+          inputRef.current = ref;
+          if (upstreamRef) {
+            if (typeof upstreamRef === 'function') {
+              upstreamRef(ref);
+            } else {
+              upstreamRef.current = ref;
+            }
+          }
+        }}
         disabled={disabled}
         style={inputStyle}
         onChange={useCallback(

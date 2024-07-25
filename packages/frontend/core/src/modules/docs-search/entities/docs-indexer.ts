@@ -1,6 +1,7 @@
 import { DebugLogger } from '@affine/debug';
 import type { Job, JobQueue, WorkspaceService } from '@toeverything/infra';
 import {
+  DBService,
   Entity,
   IndexedDBIndexStorage,
   IndexedDBJobQueue,
@@ -68,7 +69,7 @@ export class DocsIndexer extends Entity {
 
   setupListener() {
     this.workspaceEngine.doc.storage.eventBus.on(event => {
-      if (event.docId.startsWith('db$')) {
+      if (DBService.isDBDocId(event.docId)) {
         // skip db doc
         return;
       }

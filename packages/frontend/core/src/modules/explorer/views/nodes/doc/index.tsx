@@ -26,7 +26,7 @@ import {
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
 import { ExplorerTreeNode, type ExplorerTreeNodeDropEffect } from '../../tree';
-import type { NodeOperation } from '../../tree/types';
+import type { GenericExplorerNode } from '../types';
 import { Empty } from './empty';
 import { useExplorerDocNodeOperations } from './operations';
 import * as styles from './styles.css';
@@ -41,15 +41,9 @@ export const ExplorerDocNode = ({
   operations: additionalOperations,
   dropEffect,
 }: {
-  reorderable?: boolean;
   docId: string;
-  location?: AffineDNDData['draggable']['from'];
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
   isLinked?: boolean;
-  operations?: NodeOperation[];
-  dropEffect?: ExplorerTreeNodeDropEffect;
-}) => {
+} & GenericExplorerNode) => {
   const t = useI18n();
   const { docsSearchService, docsService, globalContextService } = useServices({
     DocsSearchService,

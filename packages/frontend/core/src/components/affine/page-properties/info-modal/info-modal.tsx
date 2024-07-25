@@ -40,7 +40,7 @@ export const InfoModal = ({
     WorkspaceService,
   });
   const titleInputHandleRef = useRef<InlineEditHandle>(null);
-  const manager = usePagePropertiesManager({ id: docId });
+  const manager = usePagePropertiesManager(docId);
   const handleClose = useCallback(() => {
     onOpenChange(false);
   }, [onOpenChange]);

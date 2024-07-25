@@ -18,7 +18,7 @@ export class FolderNode extends Entity<{
     parentId?: string | null;
   } | null>(this.store.watchNodeInfo(this.id ?? ''), null);
   type$ = this.info$.map(info =>
-    this.id === null ? 'folder' : info?.type ?? ''
+    this.id === null ? 'folder' : (info?.type ?? '')
   );
   data$ = this.info$.map(info => info?.data);
   name$ = this.info$.map(info => (info?.type === 'folder' ? info.data : ''));

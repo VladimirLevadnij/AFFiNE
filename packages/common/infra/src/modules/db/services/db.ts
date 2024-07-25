@@ -25,4 +25,8 @@ export class DBService extends Service {
       })
     );
   }
+
+  static isDBDocId(docId: string) {
+    return docId.startsWith('db$');
+  }
 }

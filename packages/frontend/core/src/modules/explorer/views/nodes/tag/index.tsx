@@ -15,8 +15,8 @@ import clsx from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
 
 import { ExplorerTreeNode, type ExplorerTreeNodeDropEffect } from '../../tree';
-import type { NodeOperation } from '../../tree/types';
 import { ExplorerDocNode } from '../doc';
+import type { GenericExplorerNode } from '../types';
 import { Empty } from './empty';
 import { useExplorerTagNodeOperations } from './operations';
 import * as styles from './styles.css';
@@ -31,15 +31,9 @@ export const ExplorerTagNode = ({
   canDrop,
   defaultRenaming,
 }: {
-  reorderable?: boolean;
   tagId: string;
-  location?: AffineDNDData['draggable']['from'];
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
-  operations?: NodeOperation[];
-  dropEffect?: ExplorerTreeNodeDropEffect;
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
   defaultRenaming?: boolean;
-}) => {
+} & GenericExplorerNode) => {
   const t = useI18n();
   const { tagService, globalContextService } = useServices({
     TagService,

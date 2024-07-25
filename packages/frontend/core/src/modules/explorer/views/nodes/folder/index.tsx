@@ -29,6 +29,7 @@ import type { NodeOperation } from '../../tree/types';
 import { ExplorerCollectionNode } from '../collection';
 import { ExplorerDocNode } from '../doc';
 import { ExplorerTagNode } from '../tag';
+import type { GenericExplorerNode } from '../types';
 import { FolderEmpty } from './empty';
 
 export const ExplorerFolderNode = ({
@@ -39,17 +40,15 @@ export const ExplorerFolderNode = ({
   location,
   dropEffect,
   canDrop,
+  reorderable,
 }: {
   defaultRenaming?: boolean;
   nodeId: string;
-  location?: AffineDNDData['draggable']['from'];
   onDrop?: (data: DropTargetDropEvent<AffineDNDData>, node: FolderNode) => void;
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
   operations?:
     | NodeOperation[]
     | ((type: string, node: FolderNode) => NodeOperation[]);
-  dropEffect?: ExplorerTreeNodeDropEffect;
-}) => {
+} & Omit<GenericExplorerNode, 'operations'>) => {
   const { organizeService } = useServices({ OrganizeService });
   const node = useLiveData(organizeService.folderNode$(nodeId));
   const type = useLiveData(node?.type$);
@@ -85,6 +84,7 @@ export const ExplorerFolderNode = ({
         defaultRenaming={defaultRenaming}
         operations={additionalOperations}
         dropEffect={dropEffect}
+        reorderable={reorderable}
         canDrop={canDrop}
       />
     );
@@ -95,7 +95,7 @@ export const ExplorerFolderNode = ({
           docId={data}
           location={location}
           onDrop={handleDrop}
-          reorderable
+          reorderable={reorderable}
           canDrop={canDrop}
           dropEffect={dropEffect}
           operations={additionalOperations}
@@ -110,7 +110,7 @@ export const ExplorerFolderNode = ({
           location={location}
           onDrop={handleDrop}
           canDrop={canDrop}
-          reorderable
+          reorderable={reorderable}
           dropEffect={dropEffect}
           operations={additionalOperations}
         />
@@ -143,15 +143,11 @@ export const ExplorerFolderNodeFolder = ({
   operations: additionalOperations,
   canDrop,
   dropEffect,
+  reorderable,
 }: {
   defaultRenaming?: boolean;
   node: FolderNode;
-  location?: AffineDNDData['draggable']['from'];
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
-  operations?: NodeOperation[];
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
-  dropEffect?: ExplorerTreeNodeDropEffect;
-}) => {
+} & GenericExplorerNode) => {
   const t = useI18n();
   const { docsService, workbenchService } = useServices({
     DocsService,
@@ -285,8 +281,8 @@ export const ExplorerFolderNodeFolder = ({
   );
 
   const handleDropOnChildren = useCallback(
-    (data: DropTargetDropEvent<AffineDNDData>, dropAtNode: FolderNode) => {
-      if (!dropAtNode.id) {
+    (data: DropTargetDropEvent<AffineDNDData>, dropAtNode?: FolderNode) => {
+      if (!dropAtNode || !dropAtNode.id) {
         return;
       }
       if (
@@ -584,6 +580,7 @@ export const ExplorerFolderNodeFolder = ({
       onDrop={handleDropOnFolder}
       defaultRenaming={defaultRenaming}
       renameable
+      reorderable={reorderable}
       collapsed={collapsed}
       setCollapsed={setCollapsed}
       onRename={handleRename}

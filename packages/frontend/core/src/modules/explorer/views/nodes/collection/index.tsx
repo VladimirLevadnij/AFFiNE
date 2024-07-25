@@ -30,8 +30,8 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ExplorerTreeNode, type ExplorerTreeNodeDropEffect } from '../../tree';
-import type { NodeOperation } from '../../tree/types';
 import { ExplorerDocNode } from '../doc';
+import type { GenericExplorerNode } from '../types';
 import { Empty } from './empty';
 import { useExplorerCollectionNodeOperations } from './operations';
 
@@ -44,14 +44,8 @@ export const ExplorerCollectionNode = ({
   canDrop,
   dropEffect,
 }: {
-  reorderable?: boolean;
   collectionId: string;
-  location?: AffineDNDData['draggable']['from'];
-  operations?: NodeOperation[];
-  canDrop?: DropTargetOptions<AffineDNDData>['canDrop'];
-  onDrop?: (data: DropTargetDropEvent<AffineDNDData>) => void;
-  dropEffect?: ExplorerTreeNodeDropEffect;
-}) => {
+} & GenericExplorerNode) => {
   const t = useI18n();
   const { globalContextService } = useServices({
     GlobalContextService,
