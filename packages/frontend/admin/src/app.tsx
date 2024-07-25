@@ -48,10 +48,6 @@ export const router = _createBrowserRouter(
           lazy: () => import('./modules/auth'),
         },
         {
-          path: '/admin/users',
-          lazy: () => import('./modules/users'),
-        },
-        {
           path: '/admin/setup',
           lazy: () => import('./modules/setup'),
         },

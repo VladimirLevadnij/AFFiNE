@@ -15,7 +15,7 @@ import {
 import { useQuery } from '@affine/core/hooks/use-query';
 import { FeatureType, getCurrentUserFeaturesQuery } from '@affine/graphql';
 import { CircleUser, MoreVertical } from 'lucide-react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -26,6 +26,18 @@ export function UserDropdown() {
     query: getCurrentUserFeaturesQuery,
   });
   const navigate = useNavigate();
+
+  const handleLogout = useCallback(() => {
+    fetch('/api/auth/sign-out', {
+      method: 'POST',
+    })
+      .then(() => {
+        navigate('/admin/auth');
+      })
+      .catch(err => {
+        toast.error(`Failed to logout: ${err.message}`);
+      });
+  }, [navigate]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -75,10 +87,7 @@ export function UserDropdown() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{currentUser?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
