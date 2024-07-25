@@ -481,7 +481,7 @@ export class ChatPanelMessages extends WithDisposable(ShadowlessElement) {
             .actions=${actions}
             .host=${host}
             .content=${content}
-            .chatSessionId=${this.chatContextValue.chatSessionId ?? undefined}
+            .chatSessionId=${chatSessionId ?? undefined}
             .messageId=${messageId ?? undefined}
             .withMargin=${true}
           ></chat-action-list>`
