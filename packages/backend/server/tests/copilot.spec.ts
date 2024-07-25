@@ -1022,9 +1022,9 @@ test('should be able to run image executor', async t => {
       ret,
       Array.from(['https://example.com/test.jpg', 'tag1, tag2, tag3, ']).map(
         t => ({
-          content: t,
+          attachment: t,
           nodeId: 'basic',
-          type: NodeExecuteState.Content,
+          type: NodeExecuteState.Attachment,
         })
       )
     );

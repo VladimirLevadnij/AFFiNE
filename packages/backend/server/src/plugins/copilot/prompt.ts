@@ -133,19 +133,20 @@ export class ChatPrompt {
 
     return this.messages.map(
       ({ attachments: attach, content, params: _, ...rest }) => {
+        const result: PromptMessage = {
+          ...rest,
+          params,
+          content: Mustache.render(content, restParams),
+        };
+
         const attachments = [
           ...(Array.isArray(attach) ? attach : []),
           ...paramsAttach,
         ];
-        return {
-          ...rest,
-          params,
-          content: Mustache.render(content, restParams),
-          attachments:
-            attachments.length && rest.role === 'user'
-              ? attachments
-              : undefined,
-        };
+        if (attachments.length && rest.role === 'user') {
+          result.attachments = attachments;
+        }
+        return result;
       }
     );
   }
