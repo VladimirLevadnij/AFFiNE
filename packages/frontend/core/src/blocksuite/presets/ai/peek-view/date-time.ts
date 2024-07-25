@@ -37,7 +37,7 @@ export class DateTime extends LitElement {
         weekday: true,
       },
       absolute: {
-        accuracy: 'day',
+        accuracy: 'second',
       },
     });
 

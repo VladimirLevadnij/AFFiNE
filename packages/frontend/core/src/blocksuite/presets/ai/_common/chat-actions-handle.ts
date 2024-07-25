@@ -323,7 +323,6 @@ const SAVE_CHAT_TO_BLOCK_ACTION: ChatAction = {
       if (!blockId) {
         return false;
       }
-
       return true;
     } catch (err) {
       console.error(err);
