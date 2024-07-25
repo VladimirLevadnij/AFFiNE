@@ -13,19 +13,19 @@ export interface BaseSelectorDialogProps<T> {
  * Return a `open` function to open the select collection dialog.
  */
 export const useSelectCollection = () => {
-  return useSelectDialog('select-collection', SelectCollection);
+  return useSelectDialog(SelectCollection, 'select-collection');
 };
 
 /**
  * Return a `open` function to open the select page dialog.
  */
 export const useSelectDoc = () => {
-  return useSelectDialog('select-doc-dialog', SelectPage);
+  return useSelectDialog(SelectPage, 'select-doc-dialog');
 };
 
 /**
  * Return a `open` function to open the select tag dialog.
  */
 export const useSelectTag = () => {
-  return useSelectDialog('select-tag-dialog', SelectTag);
+  return useSelectDialog(SelectTag, 'select-tag-dialog');
 };

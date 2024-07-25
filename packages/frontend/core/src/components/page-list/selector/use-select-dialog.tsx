@@ -6,14 +6,14 @@ import { useCallback, useEffect, useState } from 'react';
 import type { BaseSelectorDialogProps } from '.';
 
 export const useSelectDialog = function useSelectDialog<T>(
-  id: string,
-  Component: React.FC<BaseSelectorDialogProps<T>>
+  Component: React.FC<BaseSelectorDialogProps<T>>,
+  debugKey?: string
 ) {
   // to control whether the dialog is open, it's not equal to !!value
   // when closing the dialog, show will be `false` first, then after the animation, value turns to `undefined`
   const [show, setShow] = useState(false);
   const [value, setValue] = useState<{
-    init: T;
+    init?: T;
     onConfirm: (v: T) => void;
   }>();
 
@@ -28,7 +28,7 @@ export const useSelectDialog = function useSelectDialog<T>(
    * Open a dialog to select items
    */
   const open = useCallback(
-    (ids: T) => {
+    (ids?: T) => {
       return new Promise<T>(resolve => {
         setShow(true);
         setValue({
@@ -43,7 +43,7 @@ export const useSelectDialog = function useSelectDialog<T>(
     [close]
   );
 
-  const { mount } = useMount(id);
+  const { mount } = useMount(debugKey);
 
   useEffect(() => {
     return mount(
